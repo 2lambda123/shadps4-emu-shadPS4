@@ -51,7 +51,7 @@ private Q_SLOTS:
     void ShowGameList();
     void RefreshGameTable();
     void HandleResize(QResizeEvent* event);
-    void KeyboardConfigurationButtonPressed();
+    void ControllerConfigurationButtonPressed();
 
 private:
     Ui_MainWindow* ui;
@@ -86,7 +86,7 @@ private:
     QScopedPointer<ElfViewer> m_elf_viewer;
     // Status Bar.
     QScopedPointer<QStatusBar> statusBar;
-    QScopedPointer<KeyboardControlsWindow> m_keyboardControlsDialog;
+    QScopedPointer<KeyboardControlsWindow> m_controllerControlsDialog;
     // Available GPU devices
     std::vector<QString> m_physical_devices;
 
