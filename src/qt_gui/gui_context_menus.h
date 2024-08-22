@@ -18,6 +18,7 @@
 #include <QTreeWidget>
 #include <QTreeWidgetItem>
 
+#include "cheats_patches.h"
 #include "game_info.h"
 #include "trophy_viewer.h"
 
@@ -28,6 +29,7 @@
 #include <shlguid.h>
 #include <shobjidl.h>
 #endif
+#include "common/path_util.h"
 
 class GuiContextMenus : public QObject {
     Q_OBJECT
@@ -46,11 +48,13 @@ public:
         QMenu menu(widget);
         QAction createShortcut("Create Shortcut", widget);
         QAction openFolder("Open Game Folder", widget);
+        QAction openCheats("Cheats/Patches", widget);
         QAction openSfoViewer("SFO Viewer", widget);
         QAction openTrophyViewer("Trophy Viewer", widget);
 
         menu.addAction(&openFolder);
         menu.addAction(&createShortcut);
+        menu.addAction(&openCheats);
         menu.addAction(&openSfoViewer);
         menu.addAction(&openTrophyViewer);
 
@@ -127,6 +131,19 @@ public:
                 tableWidget->setWindowTitle("SFO Viewer");
                 tableWidget->show();
             }
+        }
+
+        if (selected == &openCheats) {
+            QString gameName = QString::fromStdString(m_games[itemID].name);
+            QString gameSerial = QString::fromStdString(m_games[itemID].serial);
+            QString gameVersion = QString::fromStdString(m_games[itemID].version);
+            QString gameSize = QString::fromStdString(m_games[itemID].size);
+            QPixmap gameImage(QString::fromStdString(m_games[itemID].icon_path));
+            CheatsPatches* cheatsPatches =
+                new CheatsPatches(gameName, gameSerial, gameVersion, gameSize, gameImage);
+            cheatsPatches->show();
+            connect(widget->parent(), &QWidget::destroyed, cheatsPatches,
+                    [widget, cheatsPatches]() { cheatsPatches->deleteLater(); });
         }
 
         if (selected == &openTrophyViewer) {
