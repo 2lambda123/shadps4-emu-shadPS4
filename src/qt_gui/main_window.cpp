@@ -16,6 +16,7 @@
 #include "core/loader.h"
 #include "game_install_dialog.h"
 #include "main_window.h"
+#include "sdl_window_manager.h"
 #include "settings_dialog.h"
 #include "video_core/renderer_vulkan/vk_instance.h"
 
@@ -203,6 +204,8 @@ void MainWindow::CreateConnects() {
     connect(m_game_list_frame.get(), &QTableWidget::cellDoubleClicked, this,
             &MainWindow::StartGame);
 
+    connect(ui->stopButton, &QPushButton::clicked, this, &MainWindow::StopGame);
+    
     connect(ui->configureAct, &QAction::triggered, this, [this]() {
         auto settingsDialog = new SettingsDialog(m_physical_devices, this);
         settingsDialog->exec();
@@ -424,6 +427,10 @@ void MainWindow::StartGame() {
         Core::Emulator emulator;
         emulator.Run(gamePath.toUtf8().constData());
     }
+}
+
+void MainWindow::StopGame() {
+    Frontend::QuitAllSDLWindows();
 }
 
 void MainWindow::SearchGameTable(const QString& text) {

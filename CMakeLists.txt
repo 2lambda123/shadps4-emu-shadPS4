@@ -534,6 +534,8 @@ set(EMULATOR src/emulator.cpp
              src/emulator.h
              src/sdl_window.h
              src/sdl_window.cpp
+             src/sdl_window_manager.cpp
+             src/sdl_window_manager.h
 )
 
 # The above is shared in SDL and Qt version (TODO share them all)
@@ -585,6 +587,8 @@ if (ENABLE_QT_GUI)
         ${VIDEO_CORE}
         ${EMULATOR}
         src/images/shadPS4.icns
+        src/sdl_window_manager.cpp
+        src/sdl_window_manager.h
     )
 else()
     add_executable(shadps4
@@ -600,6 +604,8 @@ else()
         src/emulator.h
         src/sdl_window.h
         src/sdl_window.cpp
+        src/sdl_window_manager.cpp
+        src/sdl_window_manager.h
     )
 endif()
 
